@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/88219c8c-d3c6-4bcb-900f-7cee12e492d3)# MejoresPracticas_CoreMVC
+# MejoresPracticas_CoreMVC
 
 # Objetivo
 En base al taller formativo, aplicar al menos 2 principios solid y 2 patrones de diseño en el Core MVC.
