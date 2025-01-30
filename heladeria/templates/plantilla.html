@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Rincon del Sabor</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" 
+    integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" 
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+      /* Estilos para negrita y subrayado del enlace activo */
+      .nav-link.active {
+          font-weight: bold;
+          text-decoration: underline;
+      }
+  </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">El Rincon del Sabor</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+          data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" 
+          aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'inicio' %}active{% endif %}" 
+                   aria-current="page" href="{% url 'inicio' %}">Inicio</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'consultar' %}active{% endif %}" 
+                   href="{% url 'consultar' %}">Productos</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'consultarP' %}active{% endif %}" 
+                   href="{% url 'consultarP' %}">Proveedores</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'consultarRentabilidad' %}active{% endif %}" 
+                   href="{% url 'consultarRentabilidad' %}">Rentabilidad</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'consultarCostoEficiencia' %}active{% endif %}" 
+                   href="{% url 'consultarCostoEficiencia' %}">Costo-Eficiencia</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'consultarPedidos' %}active{% endif %}" 
+                   href="{% url 'consultarPedidos' %}">Pedidos</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      {% block content %}
+
+      {% endblock %}
+
+</body>
+</html>

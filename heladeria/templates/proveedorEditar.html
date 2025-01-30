@@ -1,0 +1,38 @@
+{% extends 'plantilla.html' %}
+
+{% block content %}
+
+    <h2 class="text-center"> Proveedores</h2>
+    <div class="text-end">
+        <a href="{% url 'salir' %}" class="btn btn-info m-3">Cerrar Sesión</a>
+    </div>
+    <form class="w-50 shadow mx-auto p-4 m-3" method="post"
+    action="{% url 'editarP' %}">
+            {% csrf_token %}
+
+            <input type="hidden" name="id" value="{{ proveedor.id }}">
+
+            Nombre del Proveedor: <input type="text" name="nombreProveedor" class="form-control my-2" required
+            value="{{ proveedor.nombreProveedor }}">
+            Categoria Suministrada:
+                <select name="categoria" class="form-select" aria-label="Default select example" required>
+                    <option selected></option>
+                    {% for categoria in categorias %}
+                        <option value="{{ categoria.id }}"
+                        {% if categoria.id == proveedor.categoriaProv.id %}selected{% endif %}>
+                            {{ categoria.nombre }}
+                        </option>
+                    {% endfor %}
+                </select>
+            Costo de Insumo: <input type="float" name="costoInsumo" class="form-control my-2" required
+            value="{{ proveedor.costoInsumo }}">
+            Frecuencia de Entrega: <input type="number" name="tiempoEntrega" class="form-control my-2" required
+            value="{{ proveedor.tiempoEntrega }}">
+
+            <div class="text-center">
+                <input type="submit" value="Actualizar" class="btn btn-warning px-5">
+            </div>
+    </form> 
+    
+
+{% endblock %}

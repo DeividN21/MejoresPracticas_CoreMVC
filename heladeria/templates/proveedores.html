@@ -1,0 +1,70 @@
+{% extends 'plantilla.html' %}
+
+{% block content %}
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success">{{message}}</div>
+        {% endfor%}
+    {% endif %}
+    <h2 class="text-center"> Proveedores</h2>
+    <div class="text-end">
+        <a href="{% url 'salir' %}" class="btn btn-info m-3">Cerrar Sesión</a>
+    </div>
+    <form class="w-50 shadow mx-auto p-4 m-3" method="post"
+    action="proveedores/guardar">
+            {% csrf_token %}
+            Nombre del Proveedor: <input type="text" name="nombreProveedor" class="form-control my-2" required>
+            Categoria Suministrada:
+                <select name="categoria" class="form-select" aria-label="Default select example" required>
+                    <option selected></option>
+                    {% for categoria in categorias %}
+                        <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
+                    {% endfor %}
+                </select>
+            Costo de Insumo: <input type="float" name="costoInsumo" class="form-control my-2" required>
+            Frecuencia de Entrega: <input type="number" name="tiempoEntrega" class="form-control my-2" required>
+
+            <div class="text-center">
+                <input type="submit" value="Guardar" class="btn btn-success px-5">
+            </div>
+    </form> 
+    <table class="table table-success w-75 mx-auto text-center">
+        <tr class="table-dark">
+            <th>Nombre</th>
+            <th>Categoria Suministrada</th>
+            <th>Costo de Insumo</th>
+            <th>Frecuencia de Entrega (Días)</th>
+            <th colspan="2">
+                Acciones
+            </th>
+        </tr>
+        {% for proveedor in proveedores %}
+        <tr>
+            <td>{{ proveedor.nombreProveedor }}</td>
+            <td>{{ proveedor.categoriaProv }}</td>
+            <td>{{ proveedor.costoInsumo }}</td>
+            <td>{{ proveedor.tiempoEntrega }}</td>
+            <td>
+                <form action="{% url 'eliminarP' proveedor.id %}"
+                method="post">
+                    {% csrf_token %}
+                    <button class="btn btn-danger" onclick="return confirm('¿Estás seguro de eliminar este proveedor?')">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </form>
+            </td>
+            <td>
+                <form action="{% url 'detalleP' proveedor.id %}"
+                method="post">
+                    {% csrf_token %}
+                    <button class="btn btn-warning">
+                        <i class="fa-regular fa-pen-to-square"></i>
+                    </button>
+                </form>
+            </td>
+        
+    {% endfor %}
+    </table>
+
+{% endblock %}

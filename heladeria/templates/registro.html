@@ -1,0 +1,37 @@
+{% extends 'plantilla.html' %}
+
+{% block content %}
+
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == 'error' %}
+                <div class="alert alert-danger">{{ message }}</div>
+            {% else %}
+                <div class="alert alert-success">{{ message }}</div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    <h1 class="text-center"> REGISTRO </h1> <br>
+    <div class="text-center"> <br>
+        <h2>Registro de Usuarios</h2> <br>
+        <form action="" class="w-25 shadow mx-auto p-4 m-3" method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label class="form-label">Nombre de Usuario</label>
+                <input type="text" class="form-control" placeholder="Ejemplo: Juan123" name="username" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Contraseña</label>
+                <input type="password" class="form-control" placeholder="Contraseña" name="password1" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Confirmar Contraseña</label>
+                <input type="password" class="form-control" placeholder="Confirmar contraseña" name="password2" required>
+              </div>
+            <input type="submit" value="Registrarse" class="btn btn-primary">
+        </form>
+        <a href="{% url 'iniciar' %}" class="btn btn-warning">Regresar</a>
+    </div>
+
+{% endblock %}

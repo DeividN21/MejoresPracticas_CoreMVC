@@ -1,0 +1,32 @@
+{% extends 'plantilla.html' %}
+
+{% block content %}
+
+    {% if user.is_authenticated %}
+        <h1 class="text-center"> BIENVENIDO</h1>
+        <div class="text-end">
+            <a href="{% url 'salir' %}" class="btn btn-info m-3">Cerrar Sesión</a>
+        </div>
+        <div class="text-center">
+            <img src="https://raw.githubusercontent.com/DeividN21/Tarea1_CRUD/a4de8333f2242814b33fb09ccd872da1f957a08f/waffle-4608843_640.jpg" alt="Logo" class="img-fluid  w-25">
+        </div>
+        <form class="w-50 shadow mx-auto p-4 m-3">
+        <div class="mb-3">
+            <label for="mision"><strong>MISIÓN:</strong></label>
+            <p id="mision">
+                Ofrecer a nuestros clientes helados artesanales de la mejor calidad, elaborados con ingredientes frescos y naturales, brindando una experiencia única y acogedora en cada visita.
+            </p>
+        </div>
+        <div class="mb-3">
+            <label for="mision"><strong>VISIÓN:</strong></label>
+            <p id="vision">
+                Ser la heladería preferida en nuestra comunidad, reconocida por nuestra pasión por el sabor, la calidad y el servicio excepcional.
+            </p>
+        </div>
+        </form>
+    {% else %}
+        <h1>Primero debes iniciar sesión</h1>
+    {% endif %}
+
+
+{% endblock %}

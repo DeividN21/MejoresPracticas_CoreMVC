@@ -1,0 +1,77 @@
+{% extends 'plantilla.html' %}
+
+{% block content %}
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success">{{message}}</div>
+        {% endfor%}
+    {% endif %}
+        <h2 class="text-center"> Productos </h2>
+        <div class="text-end">
+            <a href="{% url 'salir' %}" class="btn btn-info m-3">Cerrar Sesión</a>
+        </div>
+        <form class="w-50 shadow mx-auto p-4 m-3" method="post"
+        action="productos/guardar">
+            {% csrf_token %}
+            Nombre: <input type="text" name="nombre" class="form-control my-2" required>
+            Precio: <input type="float" name="precio" class="form-control my-2" required>
+            Costo: <input type="float" name="costo" class="form-control my-2" required>
+            Cantidad: <input type="number" name="cantidad" class="form-control my-2" required>
+            Categoria:
+                <select name="categoria" class="form-select" aria-label="Default select example" required>
+                    <option selected></option>
+                    {% for categoria in categorias %}
+                        <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
+                    {% endfor %}
+                </select>
+            Descripcion:
+            <textarea class="form-control my-2" name="descripcion">
+
+            </textarea>
+            <div class="text-center">
+                <input type="submit" value="Guardar" class="btn btn-primary px-5">
+            </div>
+        </form> 
+        <table class="table table-info w-75 mx-auto text-center">
+            <tr class="table-dark">
+                <th>Nombre</th>
+                <th>Precio de Venta</th>
+                <th>Costo</th>
+                <th>Cantidad (Stock)</th>
+                <th>Categoría</th>
+                <th>Descripción</th>
+                <th colspan="2">
+                    Acciones
+                </th>
+            </tr>
+        {% for producto in productos %}
+            <tr>
+                <td>{{ producto.nombre }}</td>
+                <td>{{ producto.precio }}</td>
+                <td>{{ producto.costo }}</td>
+                <td>{{ producto.cantidad }}</td>
+                <td>{{ producto.categoriaPr }}</td>
+                <td>{{ producto.descripcion }}</td>
+                <td>
+                    <form action="{% url 'eliminar' producto.id %}"
+                    method="post">
+                        {% csrf_token %}
+                        <button class="btn btn-danger" onclick="return confirm('¿Estás seguro de eliminar este producto?')">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </form>
+                </td>
+                <td>
+                    <form action="{% url 'detalle' producto.id %}"
+                    method="post">
+                        {% csrf_token %}
+                        <button class="btn btn-warning">
+                            <i class="fa-regular fa-pen-to-square"></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </table>
+{% endblock %}
