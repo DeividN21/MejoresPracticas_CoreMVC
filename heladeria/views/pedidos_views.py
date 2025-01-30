@@ -16,31 +16,43 @@ from django.contrib.auth.decorators import login_required
 from heladeria.models import Pedido, Proveedor
 
 
+# Función para filtrar pedidos por fecha
+def filtrar_pedidos_por_fecha(pedidos, fecha_inicial, fecha_final):
+    return pedidos.filter(fechaPedido__range=[fecha_inicial, fecha_final])
+
+# Función para calcular los proveedores más rápidos
+def calcular_proveedores_mas_rapidos(pedidos):
+    menor_tiempo_entrega = float('inf')  # Inicializar con un valor infinito
+    pedidos_mas_rapidos = []  
+    tiempo_mas_rapido = None
+
+    for pedido in pedidos:
+        tiempo_entrega = (pedido.fechaEntrega - pedido.fechaPedido).days
+        if tiempo_entrega < menor_tiempo_entrega:
+            menor_tiempo_entrega = tiempo_entrega
+            pedidos_mas_rapidos = [(pedido.nombreProveedorPedido, pedido.pedidoProducto)]  # Actualizar lista
+            tiempo_mas_rapido = tiempo_entrega
+        elif tiempo_entrega == menor_tiempo_entrega:
+            pedidos_mas_rapidos.append((pedido.nombreProveedorPedido, pedido.pedidoProducto))  # Agregar a la lista
+
+    return pedidos_mas_rapidos, tiempo_mas_rapido
+
+
 @login_required
 def consultarPedidos(request):
     pedidos = Pedido.objects.all()
     proveedores = Proveedor.objects.all()
-    pedidos_mas_rapidos = []
-    tiempo_mas_rapido = None
+    pedidos_mas_rapidos = []  # Lista para almacenar los pedidos más rápidos
+    tiempo_mas_rapido = None  # Tiempo más rápido encontrado
 
-    # Filtrado por fechas
     if request.method == "POST" and 'filtrar' in request.POST:
         fecha_inicial = request.POST.get('fechaInicial')
-        fecha_final = request.POST.get('fechaFinal')
+        fecha_final = request.POST.get('fechaFinal') 
         if fecha_inicial and fecha_final:
-            pedidos = pedidos.filter(fechaPedido__range=[fecha_inicial, fecha_final])
+            pedidos = filtrar_pedidos_por_fecha(pedidos, fecha_inicial, fecha_final)  # Filtrar pedidos por fecha
 
-        # Calcular proveedores más rápidos
         if pedidos.exists():
-            menor_tiempo_entrega = float('inf')
-            for pedido in pedidos:
-                tiempo_entrega = (pedido.fechaEntrega - pedido.fechaPedido).days
-                if tiempo_entrega < menor_tiempo_entrega:
-                    menor_tiempo_entrega = tiempo_entrega
-                    pedidos_mas_rapidos = [(pedido.nombreProveedorPedido, pedido.pedidoProducto)]
-                    tiempo_mas_rapido = tiempo_entrega
-                elif tiempo_entrega == menor_tiempo_entrega:
-                    pedidos_mas_rapidos.append((pedido.nombreProveedorPedido, pedido.pedidoProducto))
+            pedidos_mas_rapidos, tiempo_mas_rapido = calcular_proveedores_mas_rapidos(pedidos)  # Calcular proveedores más rápidos
 
     return render(request, "pedidos.html", {
         'pedidos': pedidos,
